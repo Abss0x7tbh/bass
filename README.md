@@ -11,6 +11,7 @@ Detect DNS Providers > Gather resolvers from detected Providers > Combine them w
 **Example :**
 
 Assume your target is `PayPal`.
+
 ```
 paypal.com	nameserver = pdns100.ultradns.com.
 paypal.com	nameserver = ns1.p57.dynect.net.
@@ -25,3 +26,6 @@ bass will combine all the resolvers from `dynect` & `ultradns` which totals to `
 
 More DNS Providers are yet to be added.
 
+# To-Do
+
+script the combiner.
