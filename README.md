@@ -28,4 +28,4 @@ More DNS Providers are yet to be added.
 
 # To-Do
 
-script the combiner.
+script the combiner in python
