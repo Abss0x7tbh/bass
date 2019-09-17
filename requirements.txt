@@ -1,0 +1,4 @@
+tldextract==2.2.1
+pyfiglet==0.8.post1
+colorama==0.3.7
+dnspython==1.16.0
