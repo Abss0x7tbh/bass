@@ -1,6 +1,6 @@
 # bass
 
-**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your `public.txt` thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target. 
+**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of resolvers ( here located in `public.txt`), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target. 
 
 More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
