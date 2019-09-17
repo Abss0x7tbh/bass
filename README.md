@@ -1,12 +1,22 @@
 # bass
 
-**bass** aim's at collecting a huge number of authoritative nameservers that can be used as resolvers from your target's DNS Provider/(s). bass will act more like a combiner that would eventually determine the DNS Providers used by your target, combine the nameservers from each of them & by default add a properly filtered list of public-dns resolvers to give you a `Maximum` resolver count against your target.
+**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your `public.txt` thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target. 
+
+More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
+
+# Find
+
+[massNS](https://github.com/Abss0x7tbh/massNS) partially showed a simple case of existence of what i call "*backup authoritative dns servers*" that exist with DNS Providers and contain the same zone files as the primary authoritative nameservers of your target. They usually act as secondary/slave nameserver(backup strategy). They also answer authoritatively to the targets DNS queries. This is handled by a domains DNS Provider & most of them are configured the same way.
 
 # Concept 
 
-Detect DNS Providers > Gather resolvers from detected Providers > Combine them with filtered public-dns resolvers > use against your target (massdns etc)
+Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine them. Eventually add them to your filtered list of `public.txt` to give you a maximum count.
 
-![Concept Of bass](https://github.com/Abss0x7tbh/bass/blob/master/ss/concept_bass.png)
+**Algorithm :**
+
+Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (massdns etc)
+
+![Concept Of bass](https://github.com/Abss0x7tbh/test/blob/master/ss/concept_bass.png)
 
 **Example :**
 
@@ -17,15 +27,49 @@ paypal.com	nameserver = pdns100.ultradns.com.
 paypal.com	nameserver = ns1.p57.dynect.net.
 paypal.com	nameserver = pdns100.ultradns.net.
 paypal.com	nameserver = ns2.p57.dynect.net.
-
 ```
 
-bass will combine all the resolvers from `dynect` & `ultradns` which totals to `4017` resolvers. You should be able to use these `4017` resolvers against your list of paypal hosts. 
+bass will combine all the resolvers from `dynect` & `ultradns` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
+
+# usage
+
+
+```
+git clone https://github.com/Abss0x7tbh/bass.git
+cd bass
+pip install -r requirements.txt
+python bass.py -d target.com -o output/file/for/final_resolver_list.txt
+```
+
+**Reference :**
+
+| Flag  | What it does |
+| ------------- | ------------- |
+| -d / --domain  | Specify target root domain  |
+| -o/ --output  | Specify where bass has to ouput the final resolver list  |
+
+
+
+**Example :**
+
+```
+cd bass && python bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
+```
 
 # Limitations
 
-More DNS Providers are yet to be added.
+- More DNS Providers are yet to be found & added.
 
-# To-Do
+- Some NS record of `target 1` might be `ns1.xyz.com` and `target 2` might be `ns2.xyz.com` . So there are some DNS servers of providers that have only zone file of `ns1.xyz.com` so they wouldn't function for `target 2`. I have just added them all together as further classification is difficult. This only happens in the case of `nsone` as far as i have observed.
 
-script the combiner in python
+# Providers
+
+There are close to 11 DNS Providers added. There could be more. 
+
+# public.txt
+
+You can use your own custom filtered list of public-dns resolvers. Just add them to your `public.txt` so that bass defaults to it when there are no additional resolvers to be found or adds to it in case they are found.
+
+# Contributors
+
+Thanks to [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
