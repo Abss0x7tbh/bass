@@ -68,7 +68,7 @@ There are close to 11 DNS Providers added. There could be more.
 
 # public.txt
 
-You can use your own custom filtered list of public-dns resolvers. Just add them to your `public.txt` so that bass defaults to it when there are no additional resolvers to be found or adds to it in case they are found.
+You can use your own custom filtered list of public-dns resolvers. Just add them to your `public.txt` so that bass defaults to it when there are no additional resolvers to be found or adds to it in case they are found. i have just added what i could validate.
 
 # Contributors
 
