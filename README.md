@@ -31,7 +31,7 @@ paypal.com	nameserver = ns2.p57.dynect.net.
 
 bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/ultradns.txt` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
 
-# usage
+# Usage
 
 
 ```
