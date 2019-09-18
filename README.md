@@ -12,13 +12,13 @@ More the resolvers , lesser the traffic to each resolver when using tools like m
 
 Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine them. Eventually add them to your filtered list of `public.txt` to give you a maximum count.
 
-**Algorithm :**
+**Algorithm:**
 
 Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (massdns etc)
 
-![Concept Of bass](https://github.com/Abss0x7tbh/test/blob/master/ss/concept_bass.png)
+![Concept Of bass](https://user-images.githubusercontent.com/32202226/65170066-cab27a80-da3f-11e9-84c1-c70973d0a684.png)
 
-**Example :**
+**Example:**
 
 Assume your target is `PayPal`.
 
@@ -31,17 +31,17 @@ paypal.com	nameserver = ns2.p57.dynect.net.
 
 bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/ultradns.txt` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
 
-# usage
+# Usage
 
 
 ```
-git clone https://github.com/Abss0x7tbh/bass.git
-cd bass
-pip3 install -r requirements.txt
-python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
+$ git clone https://github.com/Abss0x7tbh/bass.git
+$ cd bass
+$ pip3 install -r requirements.txt
+$ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
-**Reference :**
+**Reference:**
 
 | Flag  | What it does |
 | ------------- | ------------- |
@@ -50,10 +50,10 @@ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 
 
 
-**Example :**
+**Example:**
 
 ```
-cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
+$ python3 bass.py -d paypal.com -o paypal_resolvers.txt
 ```
 
 # Limitations
