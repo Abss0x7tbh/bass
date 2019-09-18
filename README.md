@@ -16,7 +16,7 @@ Concept is to gather all abiding DNS servers from the providers network(their AS
 
 Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (massdns etc)
 
-![Concept Of bass](https://github.com/Abss0x7tbh/ss/concept_bass.png)
+![Concept Of bass](https://user-images.githubusercontent.com/32202226/65170066-cab27a80-da3f-11e9-84c1-c70973d0a684.png)
 
 **Example:**
 
