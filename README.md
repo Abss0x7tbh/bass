@@ -1,26 +1,128 @@
 # bass
 
-**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers ( here located in `public.txt`), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target.
+**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers ( here located in [/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt)), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target. 
 
 More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
-# Find
 
-[massNS](https://github.com/Abss0x7tbh/massNS) partially showed a simple case of existence of what i call "*backup authoritative dns servers*" that exist with DNS Providers and contain the same zone files as the primary authoritative nameservers of your target. They usually act as secondary/slave nameserver(backup strategy). They also answer authoritatively to the targets DNS queries. This is handled by a domains DNS Provider & most of them are configured the same way.
 
-# Concept
+# Do It Yourself
 
-Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine them. Eventually add them to your filtered list of `public.txt` to give you a maximum count.
+DNS Providers and their network have a lot of nameservers. Some primary, some secondary and some both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
 
-**Algorithm:**
 
-Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (massdns etc)
+- Let's take a target , [airbnb.com](https://airbnb.com). First let's find it's nameservers.
+```
+$ host -t ns airbnb.com
+airbnb.com name server ns2.p74.dynect.net.
+airbnb.com name server dns1.p08.nsone.net.
+airbnb.com name server dns2.p08.nsone.net.
+airbnb.com name server ns3.p74.dynect.net.
+airbnb.com name server dns4.p08.nsone.net.
+airbnb.com name server dns3.p08.nsone.net.
+airbnb.com name server ns1.p74.dynect.net.
+airbnb.com name server ns4.p74.dynect.net.
+```
+- We could see that airbnb uses dynect & nsone nameservers. Our goal is to ask these providers if they have more nameservers in their network that could also resolve airbnb.
+- Let's take one of the providers for this DIY, dynect. Let's explore the nameservers subnet for more nameservers that share zone file. Get ip address of `ns2.p74.dynect.net` using `host ns2.p74.dynect.net` i.e `162.88.18.12`.
+- Search this ip on [bgp.he.net](https://bgp.he.net/ip/162.88.18.12) & get ASN & CIDR. In this case CIDR is `162.88.18.0/24`.
+- Now masscan this cidr for port 53 to get all DNS servers first.
+```
+sudo masscan 162.88.18.0/24 -p 53 --rate=1000 | awk '{print $NF}' > diy.txt
+```
+- We get close to 31 DNS servers in diy.txt. They are :
+
+```
+162.88.18.18
+162.88.18.28
+162.88.18.20
+162.88.18.15
+162.88.18.23
+162.88.18.19
+162.88.18.11
+162.88.18.12
+162.88.18.4
+162.88.18.27
+162.88.18.10
+162.88.18.26
+162.88.18.24
+162.88.18.9
+162.88.18.16
+162.88.18.25
+162.88.18.1
+162.88.18.13
+162.88.18.17
+162.88.18.6
+162.88.18.22
+162.88.18.3
+162.88.18.31
+162.88.18.21
+162.88.18.29
+162.88.18.8
+162.88.18.7
+162.88.18.30
+162.88.18.2
+162.88.18.14
+162.88.18.5
+```
+- **In this case** all of these 31 DNS servers share the same zone files as the primary nameserver of airbnb and hence answer authoritatively. So pick any one in random and run lookup on it as :
+
+```
+ dig @162.88.18.25 airbnb.com
+
+; <<>> DiG 9.11.3-1ubuntu1.8-Ubuntu <<>> @162.88.18.25 airbnb.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 42042
+;; flags: qr aa rd; QUERY: 1, ANSWER: 3, AUTHORITY: 8, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;airbnb.com.                    IN      A
+
+;; ANSWER SECTION:
+airbnb.com.             60      IN      A       52.87.45.227
+airbnb.com.             60      IN      A       52.205.157.89
+airbnb.com.             60      IN      A       34.200.100.113
+
+;; AUTHORITY SECTION:
+airbnb.com.             86400   IN      NS      dns3.p08.nsone.net.
+airbnb.com.             86400   IN      NS      dns2.p08.nsone.net.
+airbnb.com.             86400   IN      NS      ns3.p74.dynect.net.
+airbnb.com.             86400   IN      NS      dns4.p08.nsone.net.
+airbnb.com.             86400   IN      NS      ns1.p74.dynect.net.
+airbnb.com.             86400   IN      NS      dns1.p08.nsone.net.
+airbnb.com.             86400   IN      NS      ns4.p74.dynect.net.
+airbnb.com.             86400   IN      NS      ns2.p74.dynect.net.
+
+;; Query time: 4 msec
+;; SERVER: 162.88.18.25#53(162.88.18.25)
+;; WHEN: Wed Sep 18 16:50:03 UTC 2019
+;; MSG SIZE  rcvd: 343
+
+
+```
+You will be able to resolve your target authoritatively using +31 more nameservers now.
+
+The process does not end here. Not all cases are such. Out of the nameservers collected some would/could be used for a completely different purpose and would REFUSE . Also all the networks of the Providers have been sourced & validated, so multiple ASN lookups on the provider have been done. I have validated them and placed them under `~/resolvers/*.txt` 
+
+
+# Concept Of Tool
+
+Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine their nameservers. Eventually add them with your filtered list of `public.txt` to give you a maximum count of resolvers for the specified target.
+
+**Algorithm of bass :**
+
+Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (via massdns etc)
 
 ![Concept Of bass](https://user-images.githubusercontent.com/32202226/65170066-cab27a80-da3f-11e9-84c1-c70973d0a684.png)
 
-**Example:**
+**Example using live test case :**
 
-Assume your target is `PayPal`.
+1. Assume your target is `PayPal`.
 
 ```
 paypal.com	nameserver = pdns100.ultradns.com.
@@ -31,17 +133,25 @@ paypal.com	nameserver = ns2.p57.dynect.net.
 
 bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/ultradns.txt` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
 
-# Usage
+
+# public.txt
+
+[/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt) is a default constant operand to the addition of nameservers. It contains validated public nameservers from [public-dns](https://public-dns.info/nameservers.txt). You can either add more or delete resolvers from here. This is what bass will use as a default i.e it will either add more resolvers to it or just give you the same.
+
+In short you either walk away with what you already have in your `public.txt` or something more!
+
+
+# usage
 
 
 ```
-$ git clone https://github.com/Abss0x7tbh/bass.git
-$ cd bass
-$ pip3 install -r requirements.txt
-$ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
+git clone https://github.com/Abss0x7tbh/bass.git
+cd bass
+pip3 install -r requirements.txt
+python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
-**Reference:**
+**Reference :**
 
 | Flag  | What it does |
 | ------------- | ------------- |
@@ -50,11 +160,12 @@ $ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 
 
 
-**Example:**
+**Example :**
 
 ```
-$ python3 bass.py -d paypal.com -o paypal_resolvers.txt
+cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 ```
+
 
 # Limitations
 
@@ -72,4 +183,4 @@ You can use your own custom filtered list of public-dns resolvers. Just add them
 
 # Contributors
 
-Thanks to [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
+- Thanks to [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
