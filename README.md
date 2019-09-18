@@ -5,8 +5,10 @@
 More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
 
-
 # Do It Yourself
+
+This shows you how exactly are these resolvers collected.
+
 
 DNS Providers and their network have a lot of nameservers. Some primary, some secondary and some both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
 
@@ -134,9 +136,10 @@ paypal.com	nameserver = ns2.p57.dynect.net.
 bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/ultradns.txt` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
 
 
+
 # public.txt
 
-[/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt) is a default constant operand to the addition of nameservers. It contains validated public nameservers from [public-dns](https://public-dns.info/nameservers.txt). You can either add more or delete resolvers from here. This is what bass will use as a default i.e it will either add more resolvers to it or just give you the same.
+[/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt) is a default constant operand to the addition of nameservers. It contains validated public nameservers from [public-dns](https://public-dns.info/nameservers.txt). You can either add more or delete public resolvers from here as you might have your own validated list of them already. This is what bass will use as a default i.e it will either add more resolvers to it or just give you the same.
 
 In short you either walk away with what you already have in your `public.txt` or something more!
 
@@ -167,6 +170,16 @@ cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 ```
 
 
+# Output 
+
+![output](https://user-images.githubusercontent.com/33752861/65172764-3c53ee00-da6b-11e9-8d6d-610987916770.png)
+
+
+# About /resolvers/public.txt
+
+You can use your own custom filtered list of public-dns resolvers. Just add them to your `public.txt` so that bass defaults to it when there are no additional resolvers to be found or adds to it in case they are found. i have just added what i could validate.
+
+
 # Limitations
 
 - More DNS Providers are yet to be found & added.
@@ -177,10 +190,8 @@ cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 
 There are close to 11 DNS Providers added. There could be more.
 
-# public.txt
-
-You can use your own custom filtered list of public-dns resolvers. Just add them to your `public.txt` so that bass defaults to it when there are no additional resolvers to be found or adds to it in case they are found. i have just added what i could validate.
-
 # Contributors
 
 - Thanks to [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
+- Thanks a lot [Shuaib Oladigblou](https://twitter.com/_sawzeeyy) for your contributions!
+
