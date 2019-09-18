@@ -172,7 +172,7 @@ cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 
 # Output 
 
-This output shows the count of validated public resolvers present in `/resolvers/public.txt` which are ~3.5k in number and the remaining `4017` that bass could collect. They are subject to change if you have a different `public.txt`
+This output shows the **total** count of validated public resolvers present in `/resolvers/public.txt` which are ~3.5k in number and the remaining `4017` that bass could collect from the targets providers. They are subject to change if you have a different `public.txt`.
 
 ![output](https://user-images.githubusercontent.com/33752861/65172764-3c53ee00-da6b-11e9-8d6d-610987916770.png)
 
@@ -194,6 +194,6 @@ There are close to 11 DNS Providers added. There could be more.
 
 # Contributors
 
-- Thanks to [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
+- Thanks a lot [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
 - Thanks a lot [Shuaib Oladigblou](https://twitter.com/_sawzeeyy) for your contributions & quick help!
 
