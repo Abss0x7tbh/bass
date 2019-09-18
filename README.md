@@ -5,7 +5,7 @@
 More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
 
-# Do It Yourself
+# DIY to know how the tool works
 
 This shows you how exactly are these resolvers collected.
 
