@@ -35,10 +35,10 @@ bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/u
 
 
 ```
-git clone https://github.com/Abss0x7tbh/bass.git
-cd bass
-pip3 install -r requirements.txt
-python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
+$ git clone https://github.com/Abss0x7tbh/bass.git
+$ cd bass
+$ pip3 install -r requirements.txt
+$ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
 **Reference:**
@@ -53,7 +53,7 @@ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 **Example:**
 
 ```
-python3 bass.py -d paypal.com -o paypal_resolvers.txt
+$ python3 bass.py -d paypal.com -o paypal_resolvers.txt
 ```
 
 # Limitations
