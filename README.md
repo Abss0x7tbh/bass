@@ -53,7 +53,7 @@ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 **Example:**
 
 ```
-cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
+python3 bass.py -d paypal.com -o paypal_resolvers.txt
 ```
 
 # Limitations
