@@ -1,6 +1,6 @@
 # bass
 
-**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers ( here located in `public.txt`), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target. 
+**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers ( here located in `public.txt`), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target.
 
 More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
@@ -8,7 +8,7 @@ More the resolvers , lesser the traffic to each resolver when using tools like m
 
 [massNS](https://github.com/Abss0x7tbh/massNS) partially showed a simple case of existence of what i call "*backup authoritative dns servers*" that exist with DNS Providers and contain the same zone files as the primary authoritative nameservers of your target. They usually act as secondary/slave nameserver(backup strategy). They also answer authoritatively to the targets DNS queries. This is handled by a domains DNS Provider & most of them are configured the same way.
 
-# Concept 
+# Concept
 
 Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine them. Eventually add them to your filtered list of `public.txt` to give you a maximum count.
 
@@ -37,8 +37,8 @@ bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/u
 ```
 git clone https://github.com/Abss0x7tbh/bass.git
 cd bass
-pip install -r requirements.txt
-python bass.py -d target.com -o output/file/for/final_resolver_list.txt
+pip3 install -r requirements.txt
+python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
 **Reference :**
@@ -53,7 +53,7 @@ python bass.py -d target.com -o output/file/for/final_resolver_list.txt
 **Example :**
 
 ```
-cd bass && python bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
+cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 ```
 
 # Limitations
@@ -64,7 +64,7 @@ cd bass && python bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 
 # Providers
 
-There are close to 11 DNS Providers added. There could be more. 
+There are close to 11 DNS Providers added. There could be more.
 
 # public.txt
 
