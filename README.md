@@ -193,5 +193,5 @@ There are close to 11 DNS Providers added. There could be more.
 # Contributors
 
 - Thanks to [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
-- Thanks a lot [Shuaib Oladigblou](https://twitter.com/_sawzeeyy) for your contributions!
+- Thanks a lot [Shuaib Oladigblou](https://twitter.com/_sawzeeyy) for your contributions & quick help!
 
