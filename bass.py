@@ -5,11 +5,11 @@ import sys
 from colorama import Fore
 import pyfiglet
 
-#banner
+# banner
 ascii_banner = pyfiglet.figlet_format("bass")
 print(ascii_banner)
 
-#Author & contributor
+# Author & contributor
 print("------------------------------------------")
 print("------------------------------------------")
 print("Author: "+Fore.BLUE+"@abss_tbh")
@@ -17,7 +17,7 @@ print(Fore.WHITE+"------------------------------------------")
 print("------------------------------------------")
 print("\n\n")
 
-#Input Management
+# Input Management
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--domain", required=True,
 	help="target domain")
@@ -25,13 +25,13 @@ ap.add_argument("-o", "--output", required=True,
 	help="output file of your final resolver list")
 args = vars(ap.parse_args())
 
-#global scope
+# global scope
 domain=args["domain"]
 output=args["output"]
 providers = []
 
 
-#get providers involved, create a list of files to join
+# get providers involved, create a list of files to join
 def setProv():
 
 	try:
@@ -42,17 +42,17 @@ def setProv():
 	print(Fore.GREEN+"DNS Providers :")
 	print("-----------------------------")
 	for server in answers:
-		
-		#resolver here outputs with the . at the end, so need to rstrip
+
+		# resolver here outputs with the . at the end, so need to rstrip
 		ext = tldextract.extract(str(server.target).rstrip('.'))
-		#extensions matter on Win
+		# extensions matter on Win
 		providers.append('./resolvers/'+ext.domain+'.txt')
 
 
-	#set to remove duplicate
+	# set to remove duplicate
 	final_providers = list(set(providers))
 
-	#default list of filtered public resolvers
+	# default list of filtered public resolvers
 	final_providers.append('./resolvers/public.txt')
 
 	print(Fore.RED+str(final_providers))
@@ -61,7 +61,7 @@ def setProv():
 	return final_providers
 
 
-#join multiple resolvers from different provider txt files
+# join multiple resolvers from different provider txt files
 def createFinal(fp):
 	outfile=open(output,"w")
     	for fname in fp:
@@ -72,21 +72,21 @@ def createFinal(fp):
 		except IOError:
 			print("Provider "+fname+" not available. Add an issue with the name of the provider so that we can look into it")
 	outfile.close()
-	
-#display output
+
+# display output
 def displayList():
 	f = open(output, 'r')
 	file_contents = f.read()
 	print(Fore.GREEN+ file_contents)
 	f.close()
 
-#number of total resolvers that can be used
+# number of total resolvers that can be used
 def displayStats():
 	num_lines = sum(1 for line in open(output))
 	return num_lines
 
 def main():
-	
+
 	fp=setProv()
 	createFinal(fp)
 	print(Fore.GREEN+"Final List of Resolver located at "+output+" :")
@@ -99,8 +99,8 @@ def main():
 	num=displayStats()
 	print(Fore.GREEN+'Total usable resolvers : '+Fore.RED+str(num))
 	print(Fore.RED+"-----------------------------")
-	
-  
+
+
 if __name__== "__main__":
  	main()
 
