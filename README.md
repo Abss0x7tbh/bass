@@ -12,13 +12,13 @@ More the resolvers , lesser the traffic to each resolver when using tools like m
 
 Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine them. Eventually add them to your filtered list of `public.txt` to give you a maximum count.
 
-**Algorithm :**
+**Algorithm:**
 
 Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (massdns etc)
 
 ![Concept Of bass](https://github.com/Abss0x7tbh/test/blob/master/ss/concept_bass.png)
 
-**Example :**
+**Example:**
 
 Assume your target is `PayPal`.
 
@@ -41,7 +41,7 @@ pip3 install -r requirements.txt
 python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
-**Reference :**
+**Reference:**
 
 | Flag  | What it does |
 | ------------- | ------------- |
@@ -50,7 +50,7 @@ python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 
 
 
-**Example :**
+**Example:**
 
 ```
 cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
