@@ -177,20 +177,17 @@ This output shows the **total** count of validated public resolvers present in `
 ![output](https://user-images.githubusercontent.com/33752861/65172764-3c53ee00-da6b-11e9-8d6d-610987916770.png)
 
 
-# About /resolvers/public.txt
-
-You can use your own custom filtered list of public-dns resolvers. Just add them to your `public.txt` so that bass defaults to it when there are no additional resolvers to be found or adds to it in case they are found. i have just added what i could validate.
-
-
 # Limitations
 
 - More DNS Providers are yet to be found & added.
 
 - Some NS record of `target 1` might be `ns1.xyz.com` and `target 2` might be `ns2.xyz.com` . So there are some DNS servers of providers that have only zone file of `ns1.xyz.com` so they wouldn't function for `target 2`. I have just added them all together as further classification is difficult. This only happens in the case of `nsone` as far as i have observed.
 
+
 # Providers
 
 There are close to 11 DNS Providers added. There could be more.
+
 
 # Contributors
 
