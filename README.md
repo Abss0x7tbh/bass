@@ -201,6 +201,6 @@ There are close to 11 DNS Providers added. There could be more.
 # Contributors
 
 - Thanks a lot [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
-- Thanks a lot [Shuaib Oladigblou](https://twitter.com/_sawzeeyy) for your contributions with the code & other refactorings!
+- Thanks a lot [Shuaib Oladigbolu](https://twitter.com/_sawzeeyy) for your contributions with the code & other refactorings!
 
 bass automatically tells you of any new providers it does not have resolvers for. If you want to contribute then open an issue with the providers name so that we could increase the reach. Thanks
