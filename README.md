@@ -13,7 +13,7 @@ This shows you how exactly these resolvers are collected.
 DNS Providers and their network have a lot of nameservers; some primary, secondary or both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
 
 
-- Let's take a target , [airbnb.com](https://airbnb.com). First let's find it's nameservers.
+- Let's take a target, [airbnb.com](https://airbnb.com). First let's find it's nameservers.
 ```
 $ host -t ns airbnb.com
 airbnb.com name server ns2.p74.dynect.net.
