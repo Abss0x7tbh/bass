@@ -1,16 +1,16 @@
 # bass
 
-**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers ( here located in [/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt)), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target. 
+**bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers (here located in [/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt)), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target.
 
-More the resolvers , lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
+More the resolvers, lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
 
 # DIY to know how the tool works
 
-This shows you how exactly are these resolvers collected.
+This shows you how exactly these resolvers are collected.
 
 
-DNS Providers and their network have a lot of nameservers. Some primary, some secondary and some both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
+DNS Providers and their network have a lot of nameservers; some primary, secondary or both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
 
 
 - Let's take a target , [airbnb.com](https://airbnb.com). First let's find it's nameservers.
@@ -109,7 +109,7 @@ airbnb.com.             86400   IN      NS      ns2.p74.dynect.net.
 ```
 You will be able to resolve your target authoritatively using +31 more nameservers now.
 
-The process does not end here. Not all cases are such. Out of the nameservers collected some would/could be used for a completely different purpose and would REFUSE . Also all the networks of the Providers have been sourced & validated, so multiple ASN lookups on the provider have been done. I have validated them and placed them under `~/resolvers/*.txt` 
+The process does not end here. Not all cases are such. Out of the nameservers collected some would/could be used for a completely different purpose and would REFUSE . Also all the networks of the Providers have been sourced & validated, so multiple ASN lookups on the provider have been done. I have validated them and placed them under `~/resolvers/*.txt`
 
 
 # Concept Of Tool
@@ -170,7 +170,7 @@ cd bass && python3 bass.py -d paypal.com -o ~/output/paypal_resolvers.txt
 ```
 
 
-# Output 
+# Output
 
 This output shows the **total** count of validated public resolvers present in `/resolvers/public.txt` which are ~3.5k in number and the remaining `4017` that bass could collect from the targets providers. They are subject to change if you have a different `public.txt`.
 
