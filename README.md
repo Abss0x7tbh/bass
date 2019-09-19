@@ -5,15 +5,48 @@
 More the resolvers, lesser the traffic to each resolver when using tools like massdns that perform concurrent lookups using internal hash table. So easier to scale your target list.
 
 
-# DIY to know how the tool works
-
-This shows you how exactly these resolvers are collected.
+# Table Of Contents
 
 
-DNS Providers and their network have a lot of nameservers; some primary, secondary or both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
+- [Concept Of Tool](#concept-of-tool)
+    + [DIY to know how exactly are these resolvers extracted](#diy-to-know-how-exactly-are-these-resolvers-extracted)
+- [About public.txt](#publictxt)
+- [Usage](#usage)
+- [Output](#output)
+- [Limitations](#limitations)
+- [Providers](#providers)
+- [Contributors](#contributors)
 
 
-- Let's take a target, [airbnb.com](https://airbnb.com). First let's find it's nameservers.
+# Concept Of Tool
+
+Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine their nameservers. Eventually add them with your filtered list of `public.txt` to give you a maximum count of resolvers for the specified target.
+
+**Algorithm of bass :**
+
+Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (via massdns etc)
+
+![Concept Of bass](https://user-images.githubusercontent.com/32202226/65170066-cab27a80-da3f-11e9-84c1-c70973d0a684.png)
+
+**Example using live test case :**
+
+1. Assume your target is `PayPal`.
+
+```
+paypal.com	nameserver = pdns100.ultradns.com.
+paypal.com	nameserver = ns1.p57.dynect.net.
+paypal.com	nameserver = pdns100.ultradns.net.
+paypal.com	nameserver = ns2.p57.dynect.net.
+```
+
+bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/ultradns.txt` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
+
+### DIY to know how exactly are these resolvers extracted
+
+DNS Providers and their network have a lot of nameservers. Some primary, some secondary and some both. bass looks for those nameservers that share the same zone files as the primary authoritative nameservers employed to all their clients. So these nameservers would also answer authoritatively. They can also in bulk be used as resolvers for your target.
+
+
+- Let's take a target , [airbnb.com](https://airbnb.com). First let's find it's nameservers.
 ```
 $ host -t ns airbnb.com
 airbnb.com name server ns2.p74.dynect.net.
@@ -109,31 +142,7 @@ airbnb.com.             86400   IN      NS      ns2.p74.dynect.net.
 ```
 You will be able to resolve your target authoritatively using +31 more nameservers now.
 
-The process does not end here. Not all cases are such. Out of the nameservers collected some would/could be used for a completely different purpose and would REFUSE . Also all the networks of the Providers have been sourced & validated, so multiple ASN lookups on the provider have been done. I have validated them and placed them under `~/resolvers/*.txt`
-
-
-# Concept Of Tool
-
-Concept is to gather all abiding DNS servers from the providers network(their ASN) and in cases of multiple providers combine their nameservers. Eventually add them with your filtered list of `public.txt` to give you a maximum count of resolvers for the specified target.
-
-**Algorithm of bass :**
-
-Detect DNS Providers > Gather resolvers from detected Providers (all `.txt` files inside `./bass/resolvers/` > Combine them with filtered public-dns resolvers (`pubic.txt`) > use against your target (via massdns etc)
-
-![Concept Of bass](https://user-images.githubusercontent.com/32202226/65170066-cab27a80-da3f-11e9-84c1-c70973d0a684.png)
-
-**Example using live test case :**
-
-1. Assume your target is `PayPal`.
-
-```
-paypal.com	nameserver = pdns100.ultradns.com.
-paypal.com	nameserver = ns1.p57.dynect.net.
-paypal.com	nameserver = pdns100.ultradns.net.
-paypal.com	nameserver = ns2.p57.dynect.net.
-```
-
-bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/ultradns.txt` which totals to `4017` resolvers. These resolvers are then added to a filtered public-dns resolvers `public.txt`, giving you a final list of resolvers that you can use against target list of paypal domains. The count in this case is public.txt + `4017` resolvers. Use them as resolvers with massdns for best results.
+The process does not end here. Not all cases are such. Out of the nameservers collected some would/could be used for a completely different purpose and would REFUSE . Also all the networks of the Providers have been sourced & validated, so multiple ASN lookups on the provider have been done. I have validated them and placed them under `~/resolvers/*.txt` 
 
 
 
@@ -144,7 +153,7 @@ bass will combine all the resolvers from `/resolvers/dynect.txt` & `/resolvers/u
 In short you either walk away with what you already have in your `public.txt` or something more!
 
 
-# usage
+# Usage
 
 
 ```
