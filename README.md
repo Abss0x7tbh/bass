@@ -149,6 +149,8 @@ The process does not end here. Not all cases are such. Out of the nameservers co
 
 [/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt) is a default constant operand to the addition of nameservers. It contains validated public nameservers from [public-dns](https://public-dns.info/nameservers.txt). You can either add more or delete public resolvers from here as you might have your own validated list of them already. This is what bass will use as a default i.e it will either add more resolvers to it or just give you the same.
 
+All nameservers in `public.txt` have been validated using **[dnsvalidator](https://github.com/vortexau/dnsvalidator)**
+
 In short you either walk away with what you already have in your `public.txt` or something more!
 
 
