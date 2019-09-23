@@ -14,6 +14,7 @@ More the resolvers, lesser the traffic to each resolver when using tools like ma
 - [Output](#output)
 - [Limitations](#limitations)
 - [Providers](#providers)
+     + [Provider Contributors](#provider-contributors)
 - [Contributors](#contributors)
 
 
@@ -196,7 +197,11 @@ This output shows the **total** count of validated public resolvers present in `
 
 # Providers
 
-There are close to 11 DNS Providers added. There could be more.
+There are close to 20 DNS Providers added. There could be more.
+
+## Provider Contributors
+
+- Kudos to [streaak](https://twitter.com/streaak) for sourcing more than 9+ providers with resolvers ranging anywhere from 100 - 6000!
 
 
 # Contributors
