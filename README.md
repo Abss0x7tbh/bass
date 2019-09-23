@@ -201,7 +201,7 @@ There are close to 20 DNS Providers added. There could be more.
 
 ## Provider Contributors
 
-- Kudos to [streaak](https://twitter.com/streaak) for sourcing more than 9+ providers with resolvers ranging anywhere from 100 - 6000!
+- Kudos to [streaak](https://twitter.com/streaak) for sourcing more than 9+ providers with resolvers ranging anywhere between 100 - 6000!
 
 
 # Contributors
