@@ -4,7 +4,7 @@ import dns.resolver
 import argparse
 import tldextract
 import sys
-from colorama import Fore
+from colorama import Fore, Style
 import pyfiglet
 
 # banner
@@ -108,6 +108,7 @@ def main():
     num = displayStats()
     print(Fore.GREEN+'Total usable resolvers : '+Fore.RED+str(num))
     print(Fore.RED+"-----------------------------")
+    print(Style.RESET_ALL)
 
 
 if __name__ == "__main__":
