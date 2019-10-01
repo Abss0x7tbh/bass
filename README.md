@@ -1,4 +1,4 @@
-# bass
+# 🅑🅐🅢🅢
 
 **bass** aim's at maximizing your resolver count wherever it can by combining different valid dns servers from the targets DNS Providers & adding them to your initial set of public resolvers (here located in [/resolvers/public.txt](https://github.com/Abss0x7tbh/bass/blob/master/resolvers/public.txt)), thereby allowing you to use the maximum number of resolvers obtainable for your target. This is more of a `best-case-scenario` per target.
 
