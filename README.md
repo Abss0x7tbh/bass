@@ -161,7 +161,7 @@ python <3.6 is no longer supported. Please upgrade to python3.6
 ```
 git clone https://github.com/Abss0x7tbh/bass.git
 cd bass
-python3 -m pip install -r requirements.txt 
+python3.6 -m pip install -r requirements.txt 
 python3.6 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
