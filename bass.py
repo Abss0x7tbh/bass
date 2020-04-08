@@ -1,115 +1,89 @@
 #!/usr/bin/env python3
-
 import dns.resolver
 import argparse
 import tldextract
-import sys
+import os
 from colorama import Fore, Style
-import pyfiglet
+from sys import stderr
 
-# banner
-ascii_banner = pyfiglet.figlet_format("bass")
-print(ascii_banner)
 
-# Author & contributor
-print("------------------------------------------")
-print("------------------------------------------")
-print("Author: "+Fore.BLUE+"@abss_tbh")
-print(Fore.WHITE+"------------------------------------------")
-print("------------------------------------------")
-print("\n\n")
+def banner():
+    # banner
+    print(''' _
+| |__   __ _ ___ ___
+| '_ \ / _` / __/ __|
+| |_) | (_| \__ \__ \\
+|_.__/ \__,_|___/___/''')
 
-# Input Management
-ap = argparse.ArgumentParser()
-ap.add_argument(
-    "-d", "--domain", required=True,
-    help="target domain"
-)
-ap.add_argument(
-    "-o", "--output", required=True,
-    help="output file of your final resolver list"
-)
-args = vars(ap.parse_args())
-
-# global scope
-domain = args["domain"]
-output = args["output"]
-providers = []
+    # Author & contributor
+    print("------------------------------------------")
+    print(f"Author: {Fore.BLUE}@abss0x7tbh{Style.RESET_ALL}")
+    print(f"Github: {Fore.BLUE}https://github.com/Abss0x7tbh/bass")
+    print(f"{Style.RESET_ALL}------------------------------------------")
 
 
 # get providers involved, create a list of files to join
-def setProv():
-
+def get_providers(domain):
+    # list of filtered public resolvers is a provider by default
+    providers = {'public'}
     try:
         answers = dns.resolver.query(domain, 'NS')
     except dns.exception.DNSException:
-        print("Domain failed to resolve")
-        sys.exit(1)
-    print(Fore.GREEN+"DNS Providers :")
-    print("-----------------------------")
-    for server in answers:
+        print(f"Domain {domain} failed to resolve", file=stderr)
+        return {}
 
+    for server in answers:
         # resolver here outputs with the . at the end, so need to rstrip
         ext = tldextract.extract(str(server.target).rstrip('.'))
         # extensions matter on Win
-        providers.append('./resolvers/'+ext.domain+'.txt')
-
-    # set to remove duplicate
-    final_providers = list(set(providers))
-
-    # default list of filtered public resolvers
-    final_providers.append('./resolvers/public.txt')
-
-    print(Fore.RED+str(final_providers))
-    print(Fore.GREEN+"-----------------------------")
-    print("\n")
-    return final_providers
+        providers.add(ext.domain)
+    return providers
 
 
-# join multiple resolvers from different provider txt files
-def createFinal(fp):
-    outfile = open(output, "w")
-    for fname in fp:
-        try:
-            with open(fname) as infile:
-                for line in infile:
-                    outfile.write(line)
-        except IOError:
-            print("Provider "+fname+" not available. Add an issue with the\
-                 name of the provider so that we can look into it")
-    outfile.close()
+def get_nameservers(provider_name):
+    nameservers = set()
+    script_dir = os.path.dirname(__file__)
+    if script_dir == '':
+        script_dir = '.'
+    try:
+        with open(f"{script_dir}/resolvers/{provider_name}.txt") as infile:
+            for line in infile:
+                nameservers.add(line.rstrip())
+    except IOError:
+        print(f"Provider {Fore.RED}resolvers/{provider_name}.txt {Fore.GREEN}not available. Add an issue with the name of the provider so that we can look into it", file=stderr)
+    return nameservers
 
 
-# display output
-def displayList():
-    f = open(output, 'r')
-    file_contents = f.read()
-    print(Fore.GREEN + file_contents)
-    f.close()
-
-
-# number of total resolvers that can be used
-def displayStats():
-    num_lines = sum(1 for line in open(output))
-    return num_lines
-
-
-def main():
-
-    fp = setProv()
-    createFinal(fp)
-    print(Fore.GREEN+"Final List of Resolver located at "+output+" :")
-    print("-----------------------------")
-    displayList()
-    print("-----------------------------")
-    print("\n")
-    print(Fore.RED+"Stats")
-    print("-----------------------------")
-    num = displayStats()
-    print(Fore.GREEN+'Total usable resolvers : '+Fore.RED+str(num))
-    print(Fore.RED+"-----------------------------")
-    print(Style.RESET_ALL)
+# puts the resolvers from the provider txts into the output file and returns the number of them
+def output_nameservers_to_file(providers, output_filename):
+    nameservers = set()
+    for dns_provider in providers:
+         nameservers = nameservers|get_nameservers(dns_provider)
+    with open(output_filename, "w") as outfile:
+        for nameserver in nameservers:
+            outfile.write(f"{nameserver}\n")
+    return len(nameservers)
 
 
 if __name__ == "__main__":
-    main()
+    banner()
+    # Input Management
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "-d", "--domain", required=True,
+        help="target domain"
+    )
+    ap.add_argument(
+        "-o", "--output", required=True,
+        help="output file of your final resolver list"
+    )
+    args = vars(ap.parse_args())
+
+    domain_arg = args["domain"]
+    output_arg = args["output"]
+
+    providers = get_providers(domain_arg)
+    print(f"{Fore.GREEN}DNS Providers : {Fore.RED}{str(providers)}{Fore.GREEN}")
+    num_of_resolvers = output_nameservers_to_file(providers, output_arg)
+    print(f"{Fore.GREEN}Final List of Resolver located at {Fore.RED}{output_arg}")
+    print(f"{Fore.GREEN}Total usable resolvers : {Fore.RED}{str(num_of_resolvers)}{Style.RESET_ALL}")
