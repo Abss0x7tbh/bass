@@ -156,13 +156,13 @@ In short you either walk away with what you already have in your `public.txt` or
 
 
 # Usage
-
+python <3.6 is no longer supported. Please upgrade to python3.6
 
 ```
 git clone https://github.com/Abss0x7tbh/bass.git
 cd bass
-pip3 install -r requirements.txt
-python3 bass.py -d target.com -o output/file/for/final_resolver_list.txt
+python3 -m pip install -r requirements.txt 
+python3.6 bass.py -d target.com -o output/file/for/final_resolver_list.txt
 ```
 
 **Reference :**
