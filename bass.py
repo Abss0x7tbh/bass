@@ -34,9 +34,18 @@ def get_providers(domain):
 
     for server in answers:
         # resolver here outputs with the . at the end, so need to rstrip
-        ext = tldextract.extract(str(server.target).rstrip('.'))
-        # extensions matter on Win
-        providers.add(ext.domain)
+        nsdomain = str(server.target)
+        ext = tldextract.extract(nsdomain.rstrip('.'))
+
+        # deal with awsdns
+        if "awsdns" in nsdomain:
+            awsdns_answers = dns.resolver.query(nsdomain, 'A')
+            awsdns_ip = awsdns_answers[0].address
+            with open(output_filename, "a+") as outfile:
+                outfile.write(awsdns_ip + "\n")
+        else:        
+            # extensions matter on Win
+            providers.add(ext.domain)
     return providers
 
 
@@ -55,11 +64,11 @@ def get_nameservers(provider_name):
 
 
 # puts the resolvers from the provider txts into the output file and returns the number of them
-def output_nameservers_to_file(providers, output_filename):
+def output_nameservers_to_file(providers):
     nameservers = set()
     for dns_provider in providers:
-         nameservers = nameservers|get_nameservers(dns_provider)
-    with open(output_filename, "w") as outfile:
+        nameservers = nameservers|get_nameservers(dns_provider)
+    with open(output_filename, "a+") as outfile:
         for nameserver in nameservers:
             outfile.write(f"{nameserver}\n")
     return len(nameservers)
@@ -81,9 +90,9 @@ if __name__ == "__main__":
 
     domain_arg = args["domain"]
     output_arg = args["output"]
-
+    output_filename = output_arg
     providers = get_providers(domain_arg)
     print(f"{Fore.GREEN}DNS Providers : {Fore.RED}{str(providers)}{Fore.GREEN}")
-    num_of_resolvers = output_nameservers_to_file(providers, output_arg)
+    num_of_resolvers = output_nameservers_to_file(providers)
     print(f"{Fore.GREEN}Final List of Resolver located at {Fore.RED}{output_arg}")
     print(f"{Fore.GREEN}Total usable resolvers : {Fore.RED}{str(num_of_resolvers)}{Style.RESET_ALL}")
