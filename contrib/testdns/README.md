@@ -1,11 +1,10 @@
 testdns
 =======
 
-Abss0x7tbh's 'bass' is a good idea. 'testdns' is a tool to help identify valid resolvers for a given hostname. 'bass' 
-aims to provide lists of resolvers for a given DNS provider, testdns (along with a handful of other free tools) aims to 
-help us create these lists.
+testdns is a tool to help identify valid resolvers for a given hostname. 'bass' provides lists of resolvers for a given DNS provider, 
+testdns (along with a handful of other free tools) aims to help us create these lists.
 
-lets imagine we're interested in finding resolvers for 'tripadvisor.com'. we follow the process described in detail in 
+imagine we're interested in finding resolvers for 'tripadvisor.com'. we follow the process described in detail in 
 the main advisory.
 
 running a whois on tripadvisor.com yields the following:
@@ -52,12 +51,11 @@ with asnip's help we should now have a list of prefixes belonging to nsone, cidr
     32 cidrs.txt
 
 next we're going to scan these ranges for DNS servers. while nowadays it's common to find DNS servers running over TCP, 
-traditionally DNS is a UDP thing for now at least we can assume providers will ensure that first and foremost UDP is 
+traditionally DNS is a UDP thing and for now at least we can assume providers will ensure that first and foremost UDP is 
 available.
 
-as we all know UDP is entirely stateless and is in so many ways a pleasure to work with when it comes to mass scanning.
 SYN scanning for TCP is always going to produce a heft of results that require further validation, while scanning for 
-UDP services involves us sending a specific payload and simply listening for valid responses.
+UDP services involves us sending a specific payload and simply listening for valid responses. it's a lot nicer really.
 
 the zmap repo comes complete with a handful of useful UDP payloads, so we're going to use zmap for this. the same effect
 can almost certainly be achieved using masscan, alas off the top of my head i couldn't tell you how.
