@@ -209,5 +209,6 @@ There are close to 20 DNS Providers added. There could be more.
 - Thanks a lot [Patrik Hudak](https://twitter.com/0xpatrik) for some good suggestions and help!
 - Thanks a lot [Shuaib Oladigbolu](https://twitter.com/_sawzeeyy) for your contributions with the code & other refactorings!
 - Thanks a lot [Meme-Lord](https://github.com/meme-lord) for some excellent contributions , refactorings and upgrades to the code. 
+- Thanks a lot [ip-rw](https://github.com/ip-rw) for their contribution to the testdns utility!
 
 bass automatically tells you of any new providers it does not have resolvers for. If you want to contribute then open an issue with the providers name so that we could increase the reach. Thanks
